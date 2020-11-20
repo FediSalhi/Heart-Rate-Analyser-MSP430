@@ -20,7 +20,7 @@ typedef signed SINT32_t;
 typedef unsigned char UINT8_t;
 typedef signed char SINT8_t;
 
-typedef double float FLOAT64_t;
+typedef double FLOAT64_t;
 typedef float FLOAT32_t;
 
 

@@ -10,7 +10,9 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./source/GL_vars.obj" \
 "./source/main.obj" \
+"./source/simple_communication.obj" \
 "../lnk_msp430fr5959.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibmpu_init.a \
@@ -158,8 +160,8 @@ Heart_Rate_Analyser.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "source\main.obj" 
-	-$(RM) "source\main.d" 
+	-$(RM) "source\GL_vars.obj" "source\main.obj" "source\simple_communication.obj" 
+	-$(RM) "source\GL_vars.d" "source\main.d" "source\simple_communication.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

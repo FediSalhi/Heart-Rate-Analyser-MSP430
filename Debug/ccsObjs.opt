@@ -1,1 +1,1 @@
-"./source/main.obj" "../lnk_msp430fr5959.cmd" -llibmpu_init.a -llibmath.a -llibc.a 
+"./source/GL_vars.obj" "./source/main.obj" "./source/simple_communication.obj" "../lnk_msp430fr5959.cmd" -llibmpu_init.a -llibmath.a -llibc.a 

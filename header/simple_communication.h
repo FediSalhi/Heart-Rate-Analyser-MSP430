@@ -8,8 +8,40 @@
 #ifndef HEADER_SIMPLE_COMMUNICATION_H_
 #define HEADER_SIMPLE_COMMUNICATION_H_
 
+#include "modified_types.h"
+#include "structures_definition.h"
 
 
 
+
+#define SYNCHRONOUS1            0x11
+#define SYNCHRONOUS2            0x99
+#define MAX_DATA_LENGTH         255
+
+/* source/target devices */
+#define PC                      0x00
+#define MSP430                  0x01
+
+/* packet types */
+#define HEART_RATE_PACKET       0x00
+
+
+/* simple communication packet structure */
+typedef struct {
+    UINT8_t synchronous_1;
+    UINT8_t synchronous_2;
+    UINT8_t source_device_u8;
+    UINT8_t target_device_u8;
+    UINT8_t paket_type_t;
+    UINT32_t data_length;
+    UINT8_t data[MAX_DATA_LENGTH];
+}Simple_communication_paket_t;
+
+
+void Cont_heart_rate_measurement_packet_create(Simple_communication_paket_t* paket_t,
+                                               const Heart_rate_masurement_t* heart_rate_measurement_t );
+
+void Cont_heart_rate_measurement_packet_solve(const Simple_communication_paket_t* paket_t,
+                                              Heart_rate_masurement_t* heart_rate_measurement_t);
 
 #endif /* HEADER_SIMPLE_COMMUNICATION_H_ */

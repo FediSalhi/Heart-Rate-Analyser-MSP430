@@ -6,6 +6,9 @@
  */
 
 #include<msp430fr5994.h>
+#include "GL_vars.h"
+#include "simple_communication.h"
+#include "structures_definition.h"
 
 void main() {
 
@@ -16,8 +19,9 @@ void main() {
 
     while(1) {
 
+        //measurement_loop(&heart_rate_measurement_t); //TODO: define this func.
 
-
+       // communication_loop(heart_rate_measurement_t, &Cont_heart_rate_measurement_packet_t); //TODO: define this func
 
 
     }
