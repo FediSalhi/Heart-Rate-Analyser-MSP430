@@ -10,14 +10,23 @@
 #include "simple_communication.h"
 #include "structures_definition.h"
 
+
+/*************** prototypes *************/
+void stop_watch_dog_timer();
+void adc_init();
+/************ prototypes END ************/
+
+
+
 void main() {
 
     /* initializations */
+    adc_init();
 
 
-    /* infinite loop */
 
     while(1) {
+        /* infinite loop */
 
         //measurement_loop(&heart_rate_measurement_t); //TODO: define this func.
 
@@ -26,11 +35,20 @@ void main() {
 
     }
 
+}
 
+void measuremenet_loop(Heart_rate_masurement_t* heart_rate_measurement_t) {
 
+}
+
+void adc_init(){
 
 
 }
 
+void stop_watch_dog_timer(){
+
+    WDTCTL |= (WDTPW + WDTHOLD);
+}
 
 
