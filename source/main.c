@@ -26,13 +26,13 @@ void main() {
 
     /* initializations */
     adc_init();
-
+    PM5CTL0 &= ~LOCKLPM5;
 
 
     while(1) {
         /* infinite loop */
 
-        measurement_loop(&heart_rate_measurement_t); //TODO: define this func.
+        measurement_loop(&heart_rate_measurement_t); //TODO: define this func."
 
        // communication_loop(heart_rate_measurement_t, &Cont_heart_rate_measurement_packet_t); //TODO: define this func
 
@@ -43,9 +43,9 @@ void main() {
 
 void measurement_loop(Heart_rate_masurement_t* heart_rate_measurement_t) {
 
-    FLOAT64_t measurement_f64;
+    FLOAT64_t measurement_f64 = 0;
 
-    while (get_adc_state() != CONVERSION_COMPLETED);
+    //while (get_adc_state() != CONVERSION_COMPLETED);
 
     measurement_f64 = adc_read();
 
@@ -60,14 +60,16 @@ void adc_init(){
     ADC12CTL3 |= ADC12CSTARTADD_0;  /* Conversion start address ADC12MEM0 */
 
     ADC12MCTL0 |= ADC12DIF_0;        /* single ended mode */
-    ADC12MCTL0 |= ADC12INCH_0;       /* Input channel A0 */
+    ADC12MCTL0 |= ADC12INCH_12;       /* Input channel A0 */
     ADC12CTL1  |= ADC12SHP_0;        /* SAMPCON signal is sourced from the sample-input signal. */
 
     ADC12CTL1 |= ADC12SHS_0;        /* ADC12SC selected as sample and hold source */
 
-    __bis_SR_register(GIE+CPUOFF);  /* LPM0 with general interrupt enable */
+    __bis_SR_register(GIE);  /* LPM0 with general interrupt enable */
 
-    ADC12IER0 |= ADC12IE0_1;        /* interrupt enable */
+    ADC12IER0 |= ADC12IE12_1;        /* interrupt enable */
+
+    ADC12CTL1 |= ADC12SSEL_0;       /* clock select */
 
     __delay_cycles(100);
 
@@ -96,7 +98,7 @@ ADC12_B_conversion_state_t get_adc_state(){
 FLOAT64_t adc_read() {
 
     FLOAT64_t adc_result;
-    adc_result = ADC12MEM0;
+    adc_result = ADC12MEM12;
 
     return adc_result;
 }
