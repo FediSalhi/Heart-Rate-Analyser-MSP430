@@ -15,15 +15,6 @@ typedef struct {
     FLOAT64_t heart_rate_measurement_mV_f64;
 }Heart_rate_masurement_t;
 
-typedef enum {
-    CONVERSION_NOT_COMPLETED = 0,
-    CONVERSION_COMPLETED
-}ADC12_B_conversion_state_t;
-
-
-
-
-
 
 
 #endif /* HEADER_STRUCTURES_DEFINITION_H_ */

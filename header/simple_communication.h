@@ -56,10 +56,10 @@ typedef struct {
 }Serial_uart_channel_t;
 
 
-void Cont_heart_rate_measurement_packet_create(Simple_communication_paket_t* paket_t,
+void cont_heart_rate_measurement_packet_create(Simple_communication_paket_t* packet_t,
                                                const Heart_rate_masurement_t* heart_rate_measurement_t );
 
-void Cont_heart_rate_measurement_packet_solve(const Simple_communication_paket_t* paket_t,
+void cont_heart_rate_measurement_packet_solve(const Simple_communication_paket_t* paket_t,
                                               Heart_rate_masurement_t* heart_rate_measurement_t);
 
 #endif /* HEADER_SIMPLE_COMMUNICATION_H_ */

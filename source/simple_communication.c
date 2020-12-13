@@ -10,17 +10,22 @@
 #include "structures_definition.h"
 #include "GL_vars.h"
 
-void Cont_heart_rate_measurement_packet_create(Simple_communication_paket_t* paket_t,
+void cont_heart_rate_measurement_packet_create(Simple_communication_paket_t* packet_t,
                                                const Heart_rate_masurement_t* heart_rate_measurement_t ) {
 
     /* uint ayir fonksiyonlari */
 
 }
 
-void Cont_heart_rate_measurement_packet_solve(const Simple_communication_paket_t* paket_t,
+void cont_heart_rate_measurement_packet_solve(const Simple_communication_paket_t* paket_t,
                                               Heart_rate_masurement_t* heart_rate_measurement_t) {
 
     /* uint birlestir fonk. */
+
+}
+
+void solve_packets(Simple_communication_paket_t packet)
+{
 
 }
 

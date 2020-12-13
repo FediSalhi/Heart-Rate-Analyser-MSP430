@@ -10,6 +10,41 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./driverlib/adc12_b.obj" \
+"./driverlib/aes256.obj" \
+"./driverlib/comp_e.obj" \
+"./driverlib/crc.obj" \
+"./driverlib/crc32.obj" \
+"./driverlib/cs.obj" \
+"./driverlib/dma.obj" \
+"./driverlib/esi.obj" \
+"./driverlib/eusci_a_spi.obj" \
+"./driverlib/eusci_a_uart.obj" \
+"./driverlib/eusci_b_i2c.obj" \
+"./driverlib/eusci_b_spi.obj" \
+"./driverlib/framctl.obj" \
+"./driverlib/framctl_a.obj" \
+"./driverlib/gpio.obj" \
+"./driverlib/hspll.obj" \
+"./driverlib/lcd_c.obj" \
+"./driverlib/mpu.obj" \
+"./driverlib/mpy32.obj" \
+"./driverlib/mtif.obj" \
+"./driverlib/pmm.obj" \
+"./driverlib/ram.obj" \
+"./driverlib/ref_a.obj" \
+"./driverlib/rtc_b.obj" \
+"./driverlib/rtc_c.obj" \
+"./driverlib/saph.obj" \
+"./driverlib/saph_a.obj" \
+"./driverlib/sdhs.obj" \
+"./driverlib/sfr.obj" \
+"./driverlib/sysctl.obj" \
+"./driverlib/timer_a.obj" \
+"./driverlib/timer_b.obj" \
+"./driverlib/tlv.obj" \
+"./driverlib/uups.obj" \
+"./driverlib/wdt_a.obj" \
 "./source/GL_vars.obj" \
 "./source/main.obj" \
 "./source/simple_communication.obj" \
@@ -27,8 +62,10 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include driverlib/subdir_vars.mk
 -include source/subdir_vars.mk
 -include subdir_rules.mk
+-include driverlib/subdir_rules.mk
 -include source/subdir_rules.mk
 -include objects.mk
 
@@ -160,8 +197,8 @@ Heart_Rate_Analyser.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "source\GL_vars.obj" "source\main.obj" "source\simple_communication.obj" 
-	-$(RM) "source\GL_vars.d" "source\main.d" "source\simple_communication.d" 
+	-$(RM) "driverlib\adc12_b.obj" "driverlib\aes256.obj" "driverlib\comp_e.obj" "driverlib\crc.obj" "driverlib\crc32.obj" "driverlib\cs.obj" "driverlib\dma.obj" "driverlib\esi.obj" "driverlib\eusci_a_spi.obj" "driverlib\eusci_a_uart.obj" "driverlib\eusci_b_i2c.obj" "driverlib\eusci_b_spi.obj" "driverlib\framctl.obj" "driverlib\framctl_a.obj" "driverlib\gpio.obj" "driverlib\hspll.obj" "driverlib\lcd_c.obj" "driverlib\mpu.obj" "driverlib\mpy32.obj" "driverlib\mtif.obj" "driverlib\pmm.obj" "driverlib\ram.obj" "driverlib\ref_a.obj" "driverlib\rtc_b.obj" "driverlib\rtc_c.obj" "driverlib\saph.obj" "driverlib\saph_a.obj" "driverlib\sdhs.obj" "driverlib\sfr.obj" "driverlib\sysctl.obj" "driverlib\timer_a.obj" "driverlib\timer_b.obj" "driverlib\tlv.obj" "driverlib\uups.obj" "driverlib\wdt_a.obj" "source\GL_vars.obj" "source\main.obj" "source\simple_communication.obj" 
+	-$(RM) "driverlib\adc12_b.d" "driverlib\aes256.d" "driverlib\comp_e.d" "driverlib\crc.d" "driverlib\crc32.d" "driverlib\cs.d" "driverlib\dma.d" "driverlib\esi.d" "driverlib\eusci_a_spi.d" "driverlib\eusci_a_uart.d" "driverlib\eusci_b_i2c.d" "driverlib\eusci_b_spi.d" "driverlib\framctl.d" "driverlib\framctl_a.d" "driverlib\gpio.d" "driverlib\hspll.d" "driverlib\lcd_c.d" "driverlib\mpu.d" "driverlib\mpy32.d" "driverlib\mtif.d" "driverlib\pmm.d" "driverlib\ram.d" "driverlib\ref_a.d" "driverlib\rtc_b.d" "driverlib\rtc_c.d" "driverlib\saph.d" "driverlib\saph_a.d" "driverlib\sdhs.d" "driverlib\sfr.d" "driverlib\sysctl.d" "driverlib\timer_a.d" "driverlib\timer_b.d" "driverlib\tlv.d" "driverlib\uups.d" "driverlib\wdt_a.d" "source\GL_vars.d" "source\main.d" "source\simple_communication.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
