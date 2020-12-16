@@ -12,6 +12,11 @@
 #include "driverlib.h"
 
 
+
+/************** defines ***************/
+#define PRECISION_MICRO_V 830
+
+
 /************** Global Variables ********/
 uint16_t GL_adc12_read_u16 = 0;
 FLOAT64_t GL_measurement_mV_f64 = 0;
@@ -46,9 +51,9 @@ void main() {
     __bis_SR_register(GIE);
     while(1) {
 
-        measurement_loop(&heart_rate_measurement_t); //TODO: define this func."
+       measurement_loop(&heart_rate_measurement_t); //TODO: define this func."
 
-       // communication_loop(heart_rate_measurement_t, &Cont_heart_rate_measurement_packet_t); //TODO: define this func
+       communication_loop(heart_rate_measurement_t, &Cont_heart_rate_measurement_packet_t); //TODO: define this func
 
 
     }
@@ -110,26 +115,12 @@ void measurement_loop(Heart_rate_masurement_t* heart_rate_measurement_t) {
     GL_adc12_read_u16 = ADC12MEM0;
 
     /* convert digital value to voltage */
-    GL_measurement_mV_f64 =
+    GL_measurement_mV_f64 = GL_adc12_read_u16 * 0.807 ;
 
-    heart_rate_measurement_t->heart_rate_measurement_mV_f64 = measurement_f64;
+    heart_rate_measurement_t->heart_rate_measurement_mV_f64 = GL_measurement_mV_f64;
 
 }
 
-
-#pragma vector = ADC12_VECTOR
-__interrupt void myADC_ISR (void)
-{
-    switch(ADC12IV)
-    {
-    case 12:
-        GL_data = ADC12MEM0;
-
-        __bic_SR_register_on_exit(LPM0_bits);
-
-        break;
-    }
-}
 
 
 
