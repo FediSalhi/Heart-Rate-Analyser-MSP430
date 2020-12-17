@@ -12,5 +12,7 @@
 #include "GL_vars.h"
 
 Simple_communication_paket_t Cont_heart_rate_measurement_packet_t = {0};
-Heart_rate_masurement_t heart_rate_measurement_t = {0};
+Heart_rate_masurement_t GL_heart_rate_measurement_t = {0};
+
+
 

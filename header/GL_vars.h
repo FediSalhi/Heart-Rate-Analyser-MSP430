@@ -14,7 +14,9 @@
 #include "structures_definition.h"
 
 extern Simple_communication_paket_t Cont_heart_rate_measurement_packet_t;
-extern Heart_rate_masurement_t heart_rate_measurement_t;
+extern Heart_rate_masurement_t GL_heart_rate_measurement_t;
+
+Serial_uart_channel_t GL_serial_uart_channel_t;
 
 
 

@@ -28,13 +28,16 @@ FLOAT64_t GL_measurement_mV_f64 = 0;
 
 void adc_init();
 void gpio_init();
-void measurement_loop(Heart_rate_masurement_t* heart_rate_measurement_t);
+void measurement_loop(Heart_rate_masurement_t* GL_heart_rate_measurement_t);
 
 /************ prototypes END ************/
 
 
 
 void main() {
+
+    /* init uart communication channel */
+    uart_channel_init();
 
     /* Hold Watchdog Timer */
     WDT_A_hold(WDT_A_BASE);
@@ -51,9 +54,9 @@ void main() {
     __bis_SR_register(GIE);
     while(1) {
 
-       measurement_loop(&heart_rate_measurement_t); //TODO: define this func."
+       measurement_loop(&GL_heart_rate_measurement_t); //TODO: define this func."
 
-       communication_loop(heart_rate_measurement_t, &Cont_heart_rate_measurement_packet_t); //TODO: define this func
+       communication_loop(); //TODO: define this func
 
 
     }
@@ -103,7 +106,7 @@ void gpio_init()
 
 
 
-void measurement_loop(Heart_rate_masurement_t* heart_rate_measurement_t) {
+void measurement_loop(Heart_rate_masurement_t* GL_heart_rate_measurement_t) {
 
 
 
@@ -117,11 +120,21 @@ void measurement_loop(Heart_rate_masurement_t* heart_rate_measurement_t) {
     /* convert digital value to voltage */
     GL_measurement_mV_f64 = GL_adc12_read_u16 * 0.807 ;
 
-    heart_rate_measurement_t->heart_rate_measurement_mV_f64 = GL_measurement_mV_f64;
+    GL_heart_rate_measurement_t->heart_rate_measurement_mV_f64 = GL_measurement_mV_f64;
 
 }
 
+void communication_loop()
+{
 
+    Simple_communication_paket_t packet_to_be_sent_t = {0};
+    cont_heart_rate_measurement_packet_create(&packet_to_be_sent_t,
+                                              GL_heart_rate_measurement_t );
+
+    simple_communication_package(&packet_to_be_sent_t);
+
+    //sent_packet(&packet_to_be_sent_t);
+}
 
 
 
