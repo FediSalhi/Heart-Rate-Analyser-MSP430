@@ -29,6 +29,7 @@ FLOAT64_t GL_measurement_mV_f64 = 0;
 void adc_init();
 void gpio_init();
 void measurement_loop(Heart_rate_masurement_t* GL_heart_rate_measurement_t);
+void communication_loop();
 
 /************ prototypes END ************/
 
@@ -132,6 +133,20 @@ void communication_loop()
                                               GL_heart_rate_measurement_t );
 
     simple_communication_package(&packet_to_be_sent_t);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //sent_packet(&packet_to_be_sent_t);
 }

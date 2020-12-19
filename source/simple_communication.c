@@ -54,20 +54,27 @@ void simple_communication_package(Simple_communication_paket_t* packet_to_be_sen
 }
 
 
-void float64_seperate(UINT8_t* data_u8, UINT8_t* index_u8, FLOAT64_t* data_f64)
+void float64_seperate(UINT8_t* data_u8,
+                      UINT8_t* index_u8,
+                      const FLOAT64_t* data_f64)
 {
-    data_u8[0]  = *((UINT8_t*)(data_f64 + 0));
-    data_u8[1]  = *((UINT8_t*)(data_f64 + 1));
-    data_u8[2]  = *((UINT8_t*)(data_f64 + 2));
-    data_u8[3]  = *((UINT8_t*)(data_f64 + 3));
-    data_u8[4]  = *((UINT8_t*)(data_f64 + 4));
-    data_u8[5]  = *((UINT8_t*)(data_f64 + 5));
-    data_u8[6]  = *((UINT8_t*)(data_f64 + 6));
-    data_u8[7]  = *((UINT8_t*)(data_f64 + 7));
+    data_u8[0]  = ((UINT8_t*)data_f64)[0];
+    data_u8[1]  = ((UINT8_t*)data_f64)[1];
+    data_u8[2]  = ((UINT8_t*)data_f64)[2];
+    data_u8[3]  = ((UINT8_t*)data_f64)[3];
+    data_u8[4]  = ((UINT8_t*)data_f64)[4];
+    data_u8[5]  = ((UINT8_t*)data_f64)[5];
+    data_u8[6]  = ((UINT8_t*)data_f64)[6];
+    data_u8[7]  = ((UINT8_t*)data_f64)[7];
 
     *index_u8 = 8;
 }
 
+void floar64_combine(const UINT8_t* data_u8,
+                     FLOAT64_t* data_f64)
+{
+
+}
 
 
 

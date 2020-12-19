@@ -67,7 +67,11 @@ void cont_heart_rate_measurement_packet_create(Simple_communication_paket_t *pac
 void cont_heart_rate_measurement_packet_solve(const Simple_communication_paket_t* paket_t,
                                               Heart_rate_masurement_t* heart_rate_measurement_t);
 void uart_channel_init();
+
 void simple_communication_package(Simple_communication_paket_t* packet_to_be_sent_t);
-void float64_seperate(UINT8_t* data_u8, UINT8_t* index_u8, FLOAT64_t* data_f64);
+
+void float64_seperate(UINT8_t* data_u8,
+                      UINT8_t* index_u8,
+                      const FLOAT64_t* data_f64);
 
 #endif /* HEADER_SIMPLE_COMMUNICATION_H_ */
