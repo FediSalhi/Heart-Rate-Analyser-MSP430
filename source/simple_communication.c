@@ -9,6 +9,7 @@
 #include "simple_communication.h"
 #include "structures_definition.h"
 #include "GL_vars.h"
+#include <msp430.h>
 
 
 void cont_heart_rate_measurement_packet_create(Simple_communication_paket_t *packet_to_be_sent_t,
@@ -76,7 +77,17 @@ void floar64_combine(const UINT8_t* data_u8,
 
 }
 
+void sent_packet(Simple_communication_paket_t *packet_to_be_sent_t)
+{
+    int i = 0;
+    UCA1TXBUF = packet_to_be_sent_t->synchronous_1_u8;
+    for(i=0; i<1000; i++) {}
+    UCA1TXBUF = packet_to_be_sent_t->synchronous_2_u8;
+    for(i=0; i<1000; i++) {}
+    UCA1TXBUF = packet_to_be_sent_t->target_device_u8;
 
+    for(i=0; i<100000; i++) {} //bad delay
+}
 
 
 

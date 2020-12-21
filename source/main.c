@@ -44,7 +44,7 @@ void main() {
     WDT_A_hold(WDT_A_BASE);
 
     /* unlock pins */
-    //PMM_unlockLPM5();
+    PMM_unlockLPM5();
 
     /* init uart communication channel */
     uart_channel_init();
@@ -60,65 +60,15 @@ void main() {
     __bis_SR_register(GIE);
 
 
-
-
-    WDTCTL = WDTPW | WDTHOLD; // Stop watchdog timer
-
-    // Set P2.0 and P2.1 for USCI_A0 UART operation
-    P2SEL0 &= ~(BIT0 | BIT1);
-    P2SEL1 |= BIT0 | BIT1;
-
-    P1DIR |= BIT0;        //conf LED at P1.0 for debugging
-    P1OUT |= BIT0;    //LED P1.0 switched on at startup
-
-    // Disable the GPIO power-on default high-impedance mode to activate
-    // previously configured port settings
-    PM5CTL0 &= ~LOCKLPM5;
-
-    // Startup clock system with max DCO setting ~8MHz
-    CSCTL0_H = CSKEY >> 8;              // Unlock clock registers
-    CSCTL1 = DCOFSEL_3 | DCORSEL;         // Set DCO to 8MHz
-    CSCTL2 = SELA__VLOCLK | SELS__DCOCLK | SELM__DCOCLK;
-    CSCTL3 = DIVA__1 | DIVS__1 | DIVM__1; // Set all dividers
-    CSCTL0_H = 0;                         // Lock CS registers
-
-
-    // Configure USCI_A0 for UART mode
-
-    UCA0CTLW0 = UCSWRST;          // enable software reset
-    UCA0CTLW0 |= UCSSEL__SMCLK;   // CLK = SMCLK
-
-    // Baud Rate calculation
-    // 8000000/(16*9600) = 52.083
-    // Fractional portion = 0.083
-    // UCBRFx = int ( (52.083-52)*16) = 1
-    UCA0BR0 = 52;                 // 8000000/16/9600
-    UCA0BR1 = 0x00;
-    UCA0MCTLW |= UCOS16 | UCBRF_1 | 0x4900;
-
-    UCA0CTLW0 &= ~UCSWRST;        // Initialize eUSCI, disable software reset
-    UCA0IE |= UCRXIE;             // Enable USCI_A0 RX interrupt
-
-    UCA0TXBUF = 0x41;                 //test send 'A'
-
-   __bis_SR_register(LPM0_bits | GIE);    // Enter LPM3, interrupts enabled
-   __no_operation();
-
-
-
-
-
-
-
-
-
     int i;
     while(1)
     {
        measurement_loop(&GL_heart_rate_measurement_t);
-
        communication_loop();
 
+
+       //UCA1TXBUF = 0x651;
+        //for(i=0; i<10000; i++) {} //bad delay
 
     }
 }
@@ -174,38 +124,20 @@ void communication_loop()
 
     simple_communication_package(&packet_to_be_sent_t);
 
-   //sent_packet(&packet_to_be_sent_t);
+    sent_packet(&packet_to_be_sent_t);
 }
 
-void uart_init()
-{
-    /* Tx --> P6.0
-     * RX --> P6.1
-     */
+void uart_init(void){
+    P2SEL1 |= BIT5 + BIT6;              //Activate Pin for UART use
+    P2SEL0 &= ~BIT5 + ~BIT6;            //Activate Pin for UART use
 
-    /* put UART A0 into software reset */
-    UCA3CTLW0 |= UCSWRST;
+    UCA1CTLW0 |= UCSSEL_2;              //Select clock SMCLK
 
-    /* select SMCLK */
-    UCA3BRW |= UCSSEL__SMCLK;
+    UCA1BRW = 0x6;                      //Set Baud rate 9600 : UCA1BRW = INT(F_CPU/BAUD_soll) =INT(1MHz/9600) = 104 with oversampling: 6
+    UCA1MCTLW |= UCBRS5 + UCOS16 + UCBRF3;     //Modulation according to datasheet table: UCBRS = 0x20 = b100000 and UCOS16 = 1 and UCBRF = 8 = 0x8 = b1000
 
-    /* prescaler */
-    UCA3BRW = 8;
-
-    /* configure modulation settings + low frequency */
-    UCA3MCTLW |= 0xD600;
-
-    /* setup TX and RX ports */
-    P6SEL0 |= BIT0 | BIT1; // USCI_A0 UART operation
-    P6SEL1 &= ~(BIT0 | BIT1);
-
-    /* turn on I/O */
-    PM5CTL0 &= ~LOCKLPM5;
-
-    /* turn off reset */
-    UCA3CTLW0 &= ~UCSWRST;
-}
-
+    UCA1CTLW0 &= ~UCSWRST;  //Reset UART module
+ }
 
 
 
@@ -215,22 +147,22 @@ void uart_init()
 
 #if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 
- #pragma vector=USCI_A0_VECTOR
- __interrupt void USCI_A0_ISR(void)
+ #pragma vector=USCI_A1_VECTOR
+ __interrupt void USCI_A1_ISR(void)
 
  #elif defined(__GNUC__)
- void __attribute__ ((interrupt(USCI_A0_VECTOR))) USCI_A0_ISR (void)
+ void __attribute__ ((interrupt(USCI_A1_VECTOR))) USCI_A1_ISR (void)
  #else
  #error Compiler not supported!
  #endif
  {
-     switch(__even_in_range(UCA0IV, USCI_UART_UCTXCPTIFG))
+     switch(__even_in_range(UCA1IV, USCI_UART_UCTXCPTIFG))
      {
          case USCI_NONE:
              break;
          case USCI_UART_UCRXIFG:
-             while(!(UCA0IFG & UCTXIFG));
-             UCA0TXBUF = UCA0RXBUF;        //echo
+             while(!(UCA1IFG & UCTXIFG));
+             UCA1TXBUF = UCA1RXBUF;        //echo
              P1OUT ^= ~BIT0;               //LED P1.0 switched off
              __no_operation();
              break;

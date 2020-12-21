@@ -14,6 +14,7 @@
 
 
 
+
 #define SYNCHRONOUS1            0x11
 #define SYNCHRONOUS2            0x99
 #define MAX_DATA_LENGTH         255
@@ -73,5 +74,7 @@ void simple_communication_package(Simple_communication_paket_t* packet_to_be_sen
 void float64_seperate(UINT8_t* data_u8,
                       UINT8_t* index_u8,
                       const FLOAT64_t* data_f64);
+
+void sent_packet(Simple_communication_paket_t *packet_to_be_sent_t);
 
 #endif /* HEADER_SIMPLE_COMMUNICATION_H_ */
