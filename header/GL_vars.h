@@ -13,10 +13,21 @@
 #include "simple_communication.h"
 #include "structures_definition.h"
 
-extern Simple_communication_paket_t Cont_heart_rate_measurement_packet_t;
+#define MAX_TX_BUFFER_SIZE 128
+
+
 extern Heart_rate_masurement_t GL_heart_rate_measurement_t;
 
-Serial_uart_channel_t GL_serial_uart_channel_t;
+/* Communication UART channel */
+extern Serial_uart_channel_t GL_serial_uart_channel_t;
+
+
+/* transmit ring buffer */
+extern UINT8_t GL_tx_buffer_u8[MAX_TX_BUFFER_SIZE];
+extern UINT32_t GL_tx_buffer_first_element_u8 ;
+extern UINT32_t GL_tx_buffer_last_element_u8 ;
+
+
 
 
 

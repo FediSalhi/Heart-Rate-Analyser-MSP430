@@ -79,14 +79,64 @@ void floar64_combine(const UINT8_t* data_u8,
 
 void sent_packet(Simple_communication_paket_t *packet_to_be_sent_t)
 {
-    int i = 0;
-    UCA1TXBUF = packet_to_be_sent_t->synchronous_1_u8;
-    for(i=0; i<1000; i++) {}
-    UCA1TXBUF = packet_to_be_sent_t->synchronous_2_u8;
-    for(i=0; i<1000; i++) {}
-    UCA1TXBUF = packet_to_be_sent_t->target_device_u8;
 
-    for(i=0; i<100000; i++) {} //bad delay
+    UINT8_t data_length_u8 = packet_to_be_sent_t->data_length_u8;
+    UINT8_t data_index_u8;
+
+    if (GL_tx_buffer_first_element_u8 == GL_tx_buffer_last_element_u8)
+    {
+        /* buffer is empty */
+        for (data_index_u8=0; data_index_u8<data_length_u8; data_index_u8++)
+        {
+            /* fill transmit buffer with data from packet to be sent */
+            GL_tx_buffer_u8[GL_tx_buffer_last_element_u8] = packet_to_be_sent_t->data_u8[data_index_u8];
+            GL_tx_buffer_last_element_u8 ++;
+
+            if (GL_tx_buffer_last_element_u8 >= MAX_TX_BUFFER_SIZE)
+            {
+                GL_tx_buffer_last_element_u8 = 0;
+            }
+
+        }
+    }
+
+    /* sent all data in transmit buffer */
+
+
+
+    UCA1TXBUF = packet_to_be_sent_t->synchronous_1_u8;
+    _delay_cycles(1000);
+
+    UCA1TXBUF = packet_to_be_sent_t->synchronous_2_u8;
+    _delay_cycles(1000);
+
+    UCA1TXBUF = packet_to_be_sent_t->source_device_u8;
+    _delay_cycles(1000);
+
+    UCA1TXBUF = packet_to_be_sent_t->target_device_u8;
+    _delay_cycles(1000);
+
+    UCA1TXBUF = packet_to_be_sent_t->paket_type_t;
+    _delay_cycles(1000);
+
+    UCA1TXBUF = packet_to_be_sent_t->data_length_u8;
+    _delay_cycles(1000);
+
+    for (data_index_u8=0; data_index_u8<data_length_u8; data_index_u8++)
+    {
+        UCA1TXBUF = GL_tx_buffer_u8[GL_tx_buffer_first_element_u8];
+        GL_tx_buffer_first_element_u8 ++;
+
+        if (GL_tx_buffer_first_element_u8 >= MAX_TX_BUFFER_SIZE)
+        {
+            GL_tx_buffer_first_element_u8 = 0;
+        }
+        _delay_cycles(1000);
+    }
+
+    _delay_cycles(10000);
+
+
 }
 
 

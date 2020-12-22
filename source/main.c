@@ -39,7 +39,6 @@ void communication_loop();
 void main() {
 
 
-
     /* Hold Watchdog Timer */
     WDT_A_hold(WDT_A_BASE);
 
@@ -60,7 +59,6 @@ void main() {
     __bis_SR_register(GIE);
 
 
-    int i;
     while(1)
     {
        measurement_loop(&GL_heart_rate_measurement_t);
@@ -127,7 +125,8 @@ void communication_loop()
     sent_packet(&packet_to_be_sent_t);
 }
 
-void uart_init(void){
+void uart_init(void)
+{
     P2SEL1 |= BIT5 + BIT6;              //Activate Pin for UART use
     P2SEL0 &= ~BIT5 + ~BIT6;            //Activate Pin for UART use
 
@@ -140,38 +139,4 @@ void uart_init(void){
  }
 
 
-
-
-
-
-
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-
- #pragma vector=USCI_A1_VECTOR
- __interrupt void USCI_A1_ISR(void)
-
- #elif defined(__GNUC__)
- void __attribute__ ((interrupt(USCI_A1_VECTOR))) USCI_A1_ISR (void)
- #else
- #error Compiler not supported!
- #endif
- {
-     switch(__even_in_range(UCA1IV, USCI_UART_UCTXCPTIFG))
-     {
-         case USCI_NONE:
-             break;
-         case USCI_UART_UCRXIFG:
-             while(!(UCA1IFG & UCTXIFG));
-             UCA1TXBUF = UCA1RXBUF;        //echo
-             P1OUT ^= ~BIT0;               //LED P1.0 switched off
-             __no_operation();
-             break;
-         case USCI_UART_UCTXIFG:
-             break;
-         case USCI_UART_UCSTTIFG:
-             break;
-         case USCI_UART_UCTXCPTIFG:
-             break;
-     }
-}
 
