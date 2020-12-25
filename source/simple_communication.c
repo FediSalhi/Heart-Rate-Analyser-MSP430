@@ -86,6 +86,53 @@ void sent_packet(Simple_communication_paket_t *packet_to_be_sent_t)
     if (GL_tx_buffer_first_element_u8 == GL_tx_buffer_last_element_u8)
     {
         /* buffer is empty */
+
+
+        /* add header bytes to transmit buffer */
+
+        GL_tx_buffer_u8[GL_tx_buffer_last_element_u8] = packet_to_be_sent_t->synchronous_1_u8;
+        GL_tx_buffer_last_element_u8 ++;
+        if (GL_tx_buffer_last_element_u8 >= MAX_TX_BUFFER_SIZE)
+        {
+            GL_tx_buffer_last_element_u8 = 0;
+        }
+
+        GL_tx_buffer_u8[GL_tx_buffer_last_element_u8] = packet_to_be_sent_t->synchronous_2_u8;
+        GL_tx_buffer_last_element_u8 ++;
+        if (GL_tx_buffer_last_element_u8 >= MAX_TX_BUFFER_SIZE)
+        {
+            GL_tx_buffer_last_element_u8 = 0;
+        }
+
+        GL_tx_buffer_u8[GL_tx_buffer_last_element_u8] = packet_to_be_sent_t->source_device_u8;
+        GL_tx_buffer_last_element_u8 ++;
+        if (GL_tx_buffer_last_element_u8 >= MAX_TX_BUFFER_SIZE)
+        {
+            GL_tx_buffer_last_element_u8 = 0;
+        }
+
+        GL_tx_buffer_u8[GL_tx_buffer_last_element_u8] = packet_to_be_sent_t->target_device_u8;
+        GL_tx_buffer_last_element_u8 ++;
+        if (GL_tx_buffer_last_element_u8 >= MAX_TX_BUFFER_SIZE)
+        {
+            GL_tx_buffer_last_element_u8 = 0;
+        }
+
+        GL_tx_buffer_u8[GL_tx_buffer_last_element_u8] = packet_to_be_sent_t->paket_type_t;
+        GL_tx_buffer_last_element_u8 ++;
+        if (GL_tx_buffer_last_element_u8 >= MAX_TX_BUFFER_SIZE)
+        {
+            GL_tx_buffer_last_element_u8 = 0;
+        }
+
+        GL_tx_buffer_u8[GL_tx_buffer_last_element_u8] = packet_to_be_sent_t->data_length_u8;
+        GL_tx_buffer_last_element_u8 ++;
+        if (GL_tx_buffer_last_element_u8 >= MAX_TX_BUFFER_SIZE)
+        {
+            GL_tx_buffer_last_element_u8 = 0;
+        }
+
+        /* add data to transmit buffer */
         for (data_index_u8=0; data_index_u8<data_length_u8; data_index_u8++)
         {
             /* fill transmit buffer with data from packet to be sent */
@@ -96,7 +143,6 @@ void sent_packet(Simple_communication_paket_t *packet_to_be_sent_t)
             {
                 GL_tx_buffer_last_element_u8 = 0;
             }
-
         }
     }
 
@@ -104,25 +150,26 @@ void sent_packet(Simple_communication_paket_t *packet_to_be_sent_t)
 
 
 
-    UCA1TXBUF = packet_to_be_sent_t->synchronous_1_u8;
-    _delay_cycles(1000);
+
+/*    UCA1TXBUF = packet_to_be_sent_t->synchronous_1_u8;
+    _delay_cycles(700);
 
     UCA1TXBUF = packet_to_be_sent_t->synchronous_2_u8;
-    _delay_cycles(1000);
+    _delay_cycles(700);
 
     UCA1TXBUF = packet_to_be_sent_t->source_device_u8;
-    _delay_cycles(1000);
+    _delay_cycles(700);
 
     UCA1TXBUF = packet_to_be_sent_t->target_device_u8;
-    _delay_cycles(1000);
+    _delay_cycles(700);
 
     UCA1TXBUF = packet_to_be_sent_t->paket_type_t;
-    _delay_cycles(1000);
+    _delay_cycles(700);
 
     UCA1TXBUF = packet_to_be_sent_t->data_length_u8;
-    _delay_cycles(1000);
+    _delay_cycles(700);*/
 
-    for (data_index_u8=0; data_index_u8<data_length_u8; data_index_u8++)
+    for (data_index_u8=0; data_index_u8<data_length_u8+6 ; data_index_u8++) //const olarak tanimla bunu
     {
         UCA1TXBUF = GL_tx_buffer_u8[GL_tx_buffer_first_element_u8];
         GL_tx_buffer_first_element_u8 ++;
@@ -133,10 +180,6 @@ void sent_packet(Simple_communication_paket_t *packet_to_be_sent_t)
         }
         _delay_cycles(1000);
     }
-
-    _delay_cycles(10000);
-
-
 }
 
 

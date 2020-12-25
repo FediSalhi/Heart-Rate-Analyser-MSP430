@@ -22,3 +22,6 @@ UINT8_t GL_tx_buffer_u8[MAX_TX_BUFFER_SIZE];
 UINT32_t GL_tx_buffer_first_element_u8 = 0;
 UINT32_t GL_tx_buffer_last_element_u8  = 0;
 
+/* cycle counter used to send data evey one second */
+UINT32_t GL_cycle_counter_u32 = 0 ;
+

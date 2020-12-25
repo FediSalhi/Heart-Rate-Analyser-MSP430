@@ -63,11 +63,6 @@ void main() {
     {
        measurement_loop(&GL_heart_rate_measurement_t);
        communication_loop();
-
-
-       //UCA1TXBUF = 0x651;
-        //for(i=0; i<10000; i++) {} //bad delay
-
     }
 }
 
@@ -116,13 +111,24 @@ void measurement_loop(Heart_rate_masurement_t* GL_heart_rate_measurement_t)
 
 void communication_loop()
 {
+
+    /* increment cycle counter */
+    GL_cycle_counter_u32 ++;
+
     Simple_communication_paket_t packet_to_be_sent_t = {0};
     cont_heart_rate_measurement_packet_create(&packet_to_be_sent_t,
                                               GL_heart_rate_measurement_t );
 
     simple_communication_package(&packet_to_be_sent_t);
 
-    sent_packet(&packet_to_be_sent_t);
+
+    /* send packet every one second */
+    if (GL_cycle_counter_u32 == 250)
+    {
+        sent_packet(&packet_to_be_sent_t);
+        GL_cycle_counter_u32 = 0;
+    }
+
 }
 
 void uart_init(void)

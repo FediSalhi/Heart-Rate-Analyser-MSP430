@@ -27,6 +27,10 @@ extern UINT8_t GL_tx_buffer_u8[MAX_TX_BUFFER_SIZE];
 extern UINT32_t GL_tx_buffer_first_element_u8 ;
 extern UINT32_t GL_tx_buffer_last_element_u8 ;
 
+/* cycle counter used to send packet every 1s */
+extern UINT32_t GL_cycle_counter_u32;
+
+
 
 
 
