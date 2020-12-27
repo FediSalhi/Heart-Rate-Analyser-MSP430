@@ -123,11 +123,13 @@ void communication_loop()
 
 
     /* send packet every one second */
-    if (GL_cycle_counter_u32 == 250)
+    if (GL_cycle_counter_u32 == 30)
     {
         sent_packet(&packet_to_be_sent_t);
         GL_cycle_counter_u32 = 0;
     }
+
+    //sent_packet(&packet_to_be_sent_t);
 
 }
 
@@ -138,8 +140,12 @@ void uart_init(void)
 
     UCA1CTLW0 |= UCSSEL_2;              //Select clock SMCLK
 
-    UCA1BRW = 0x6;                      //Set Baud rate 9600 : UCA1BRW = INT(F_CPU/BAUD_soll) =INT(1MHz/9600) = 104 with oversampling: 6
-    UCA1MCTLW |= UCBRS5 + UCOS16 + UCBRF3;     //Modulation according to datasheet table: UCBRS = 0x20 = b100000 and UCOS16 = 1 and UCBRF = 8 = 0x8 = b1000
+    //UCA1BRW = 0x6;                      //Set Baud rate 9600 : UCA1BRW = INT(F_CPU/BAUD_soll) =INT(1MHz/9600) = 104 with oversampling: 6
+    UCA1BR0 = 0x08; // 1MHz 115200
+    UCA1BR1 = 0x00;
+
+    //UCA1MCTLW |= UCBRS5 + UCOS16 + UCBRF3;     //Modulation according to datasheet table: UCBRS = 0x20 = b100000 and UCOS16 = 1 and UCBRF = 8 = 0x8 = b1000
+    UCA1MCTLW = UCBRS2 + UCBRS0;
 
     UCA1CTLW0 &= ~UCSWRST;  //Reset UART module
  }
